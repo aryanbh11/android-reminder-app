@@ -51,6 +51,23 @@ public class Task {
 
     }
 
+    public long getRemainingTimeValue() {
+        // Used for Sorting the Tasks
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+
+        try {
+            Date dueDate = dateFormat.parse(dueDateString + " " + dueTimeString);
+            Date currentDate = new Date();
+
+            long remainingTime = dueDate.getTime() - currentDate.getTime();
+
+            return remainingTime;
+
+        } catch (ParseException e) {
+            return -1;
+        }
+    }
+
     public void setTaskName(String taskName) {
         this.taskName = taskName;
     }

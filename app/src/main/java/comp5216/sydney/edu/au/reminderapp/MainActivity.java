@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
     // Define Variables
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
                         // Add Item
                         Task newTask = new Task(taskName, dueDate, dueTime);
                         adapter.add(newTask);
+                        // Sorting list based on remaining time:
+                        Collections.sort(tasks, new TaskComparator());
                     } else {
                         // Update Item
                         tasks.get(position).setTaskName(taskName);
@@ -45,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
                         // Make a standard toast that just contains text
                         Toast.makeText(getApplicationContext(), "Updated Task "
                                         + Integer.toString(position), Toast.LENGTH_SHORT).show();
+                        // Sorting list based on remaining time:
+                        Collections.sort(tasks, new TaskComparator());
                         adapter.notifyDataSetChanged();
                     }
                 }
@@ -61,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.lstView);
 
         tasks = new ArrayList<Task>();
-        tasks.add(new Task("Laundry", "27 /08/2021", "21:30"));
 
         adapter = new TaskArrayAdapter(this, 0, tasks);
 
@@ -81,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 tasks.remove(position); // Remove item from the ArrayList
+                                // Sorting list based on remaining time:
+                                Collections.sort(tasks, new TaskComparator());
                                 // Notify listView adapter to update the list:
                                 adapter.notifyDataSetChanged();
                             }
@@ -112,6 +118,8 @@ public class MainActivity extends AppCompatActivity {
 
                     // brings up the second activity
                     mLauncher.launch(intent);
+                    // Sorting list based on remaining time:
+                    Collections.sort(tasks, new TaskComparator());
                     adapter.notifyDataSetChanged();
                 }
             }
@@ -124,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
         if (intent != null) {
             intent.putExtra("position", -1);
             mLauncher.launch(intent);
+            Collections.sort(tasks, new TaskComparator()); // Sorting list based on remaining time
             adapter.notifyDataSetChanged();
         }
     }
