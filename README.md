@@ -1,16 +1,18 @@
 # COMP5216: Assignment 1 -> Android Reminder App
 
-## Student Details:
+## Student Details
 - **Name:** Aryan Bhatia 
 - **SID:** 490352056
 - **Unikey:** abha6244
 
-## Features:
+## Features
+### Main View:
 - A ListView which displays all the saved tasks. Each task consists of a title and the remaining 
   time (in days, hours and mins e.g. 1 day 7 hours 15 mins) to complete the task. Clicking a task 
   will switch to the “Edit/Add Task” view.
 - An “ADD NEW” button. Once this button is clicked, the app will switch to the “Edit/Add Task” view.
 
+### Edit/Add Task View:
 - A “Text field” which allows user to type or edit the title of a task to add or update
 the ListView
 - A “Date/Time Picker” that allows user to set or update the due date/time of a task
@@ -23,7 +25,7 @@ the ListView
   When this button is clicked, the app will pop up a dialog that asks user: 
   ”Are you sure to cancel this edit? Your unsaved edit will be discarded if you click YES”.
 
-### SQLite Database ([**Room**](https://developer.android.com/training/data-storage/room)) Features
+### SQLite Database ([**Room**](https://developer.android.com/training/data-storage/room)) Features:
 - Every time user launches this app, the app loads the list of tasks from the local Database.
 - The list of tasks should be displayed and sorted based on the remaining time to complete a task
 - If a task is overdue, it should display a text “OVERDUE” next to the task title instead of 
