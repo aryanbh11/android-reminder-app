@@ -17,12 +17,16 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class MainActivity extends AppCompatActivity {
     // Define Variables
     private ListView listView;
     private ArrayList<Task> tasks;
     private ArrayAdapter<Task> adapter;
+    private TaskEntityDB db;
+    private TaskEntityDao taskEntityDao;
 
     // Register a request to start an activity for result and register the result callback
     ActivityResultLauncher<Intent> mLauncher = registerForActivityResult(
@@ -40,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
                         adapter.add(newTask);
                         // Sorting list based on remaining time:
                         Collections.sort(tasks, new TaskComparator());
+                        saveItemsToDatabase();
                     } else {
                         // Update Item
                         tasks.get(position).setTaskName(taskName);
@@ -51,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
                         // Sorting list based on remaining time:
                         Collections.sort(tasks, new TaskComparator());
                         adapter.notifyDataSetChanged();
+                        saveItemsToDatabase();
                     }
                 }
             }
@@ -66,6 +72,11 @@ public class MainActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.lstView);
 
         tasks = new ArrayList<Task>();
+
+        // Setup Room Database Entities
+        db = TaskEntityDB.getDatabase(this.getApplication().getApplicationContext());
+        taskEntityDao = db.taskEntityDao();
+        readItemsFromDatabase();
 
         adapter = new TaskArrayAdapter(this, 0, tasks);
 
@@ -89,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
                                 Collections.sort(tasks, new TaskComparator());
                                 // Notify listView adapter to update the list:
                                 adapter.notifyDataSetChanged();
+                                saveItemsToDatabase();
                             }
                         })
                         .setNegativeButton("NO", new DialogInterface.OnClickListener() {
@@ -121,9 +133,68 @@ public class MainActivity extends AppCompatActivity {
                     // Sorting list based on remaining time:
                     Collections.sort(tasks, new TaskComparator());
                     adapter.notifyDataSetChanged();
+                    saveItemsToDatabase();
                 }
             }
         });
+    }
+
+    private void readItemsFromDatabase() {
+        //Use asynchronous task to run query on the background and wait for result
+        try {
+            // Run a task specified by a Runnable Object asynchronously.
+            CompletableFuture<Void> future = CompletableFuture.runAsync(new Runnable() {
+                @Override
+                public void run() {
+                    //read items from database
+                    List<TaskEntity> itemsFromDB = taskEntityDao.listAll();
+                    tasks = new ArrayList<Task>();
+                    if (itemsFromDB != null & itemsFromDB.size() > 0) {
+                        for (TaskEntity item : itemsFromDB) {
+                            Task task = new Task(item.getTaskName(), item.getDueDate(),
+                                    item.getDueTime());
+                            tasks.add(task);
+                            Log.i("SQLite read item", "ID: " + item.getTaskID() +
+                                    " Name: " + item.getTaskName());
+                        }
+                    }
+                    System.out.println("I'll run in a separate thread than the main thread.");
+                }
+            });
+
+            // Block and wait for the future to complete
+            future.get();
+        } catch(Exception ex) {
+            Log.e("readItemsFromDatabase", ex.getStackTrace().toString());
+        }
+    }
+
+    private void saveItemsToDatabase() {
+        //Use asynchronous task to run query on the background to avoid locking UI
+        try {
+            // Run a task specified by a Runnable Object asynchronously.
+            CompletableFuture<Void> future = CompletableFuture.runAsync(new Runnable() {
+                @Override
+                public void run() {
+                    //delete all items and re-insert
+                    taskEntityDao.deleteAll();
+                    for (Task todo : tasks) {
+                        TaskEntity task = new TaskEntity();
+                        task.setTaskName(todo.getTaskName());
+                        task.setDueDate(todo.getDueDate());
+                        task.setDueTime(todo.getDueTime());
+                        taskEntityDao.insert(task);
+                        Log.i("SQLite saved item", todo.getTaskName());
+                    }
+                    System.out.println("I'll run in a separate thread than the main thread.");
+                }
+            });
+
+            // Block and wait for the future to complete
+            future.get();
+        } catch(Exception ex) {
+            Log.e("saveItemsToDatabase", ex.getStackTrace().toString());
+        }
     }
 
 
@@ -134,6 +205,7 @@ public class MainActivity extends AppCompatActivity {
             mLauncher.launch(intent);
             Collections.sort(tasks, new TaskComparator()); // Sorting list based on remaining time
             adapter.notifyDataSetChanged();
+            saveItemsToDatabase();
         }
     }
 }
