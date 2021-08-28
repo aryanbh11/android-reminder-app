@@ -25,10 +25,10 @@ the ListView
   When this button is clicked, the app will pop up a dialog that asks user: 
   ”Are you sure to cancel this edit? Your unsaved edit will be discarded if you click YES”.
 
-### SQLite Database ([**Room**](https://developer.android.com/training/data-storage/room)) Features:
+### SQLite Database ([**Room**](https://developer.android.com/training/data-storage/room)):
 - Every time user launches this app, the app loads the list of tasks from the local Database.
-- The list of tasks should be displayed and sorted based on the remaining time to complete a task
-- If a task is overdue, it should display a text “OVERDUE” next to the task title instead of 
+- The list of tasks should be displayed and **sorted based on the remaining time** to complete a task
+- If a task is **overdue**, it should display a text “OVERDUE” next to the task title instead of 
   showing the remaining time.
 - When clicking the “Save” button in the “Edit/Add Task” view, the app should add or update the task 
   in both the ListView and local Database.
