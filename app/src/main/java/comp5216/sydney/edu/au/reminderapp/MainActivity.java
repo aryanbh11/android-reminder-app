@@ -20,6 +20,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Main Activity Class. The first page the the user sees and the page that fires up other pages.
+ */
 public class MainActivity extends AppCompatActivity {
     // Define Variables
     private ListView listView;
@@ -62,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
             }
     );
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
         setupListViewListener();
     }
-
 
     private void setupListViewListener() {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -197,11 +198,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Handler for the "ADD NEW" button. Launches the Edit/Add task page.
+     * @param view
+     */
     public void onAddButtonClick(View view) {
         Intent intent = new Intent(MainActivity.this, EditAddTaskActivity.class);
         if (intent != null) {
-            intent.putExtra("position", -1);
+            intent.putExtra("position", -1); // position=-1 to singify new item
             mLauncher.launch(intent);
             Collections.sort(tasks, new TaskComparator()); // Sorting list based on remaining time
             adapter.notifyDataSetChanged();

@@ -9,13 +9,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+/**
+ * The Edit/Add Task page.
+ */
 public class EditAddTaskActivity extends Activity {
     // Define Variables
     EditText taskName;
     EditText dueDate;
     EditText dueTime;
     int position;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,18 +36,23 @@ public class EditAddTaskActivity extends Activity {
             dueDate.setText("");
             dueTime.setText("");
         } else {
+            // Edit item case
             String taskNameRec = getIntent().getStringExtra("taskName");
             String dueDateRec = getIntent().getStringExtra("dueDate");
             String dueTimeRec = getIntent().getStringExtra("dueTime");
 
+            // pre fill the fields with current values for the task
             taskName.setText(taskNameRec);
             dueDate.setText(dueDateRec);
             dueTime.setText(dueTimeRec);
         }
-
     }
 
-
+    /**
+     * Handler for the "Save" Button. Saves the task to the ListView and database and sends user
+     * back to homepage.
+     * @param v
+     */
     public void onSubmit(View v) {
 
         // Prepare data for sending back
@@ -61,6 +68,10 @@ public class EditAddTaskActivity extends Activity {
         finish(); // Close the activity, pass data to parent
     }
 
+    /**
+     * Handler for the "Cancel" Button. Fires a up a dialogue box.
+     * @param v
+     */
     public void onCancel(View v) {
         AlertDialog.Builder builder = new AlertDialog.Builder(EditAddTaskActivity.this);
         builder.setTitle("Are you sure you want to cancel the edit?")

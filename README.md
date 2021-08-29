@@ -36,8 +36,16 @@ the ListView
   task, the app will pop up a message that asks user: ”Do you want to delete this task?” If the user
   clicks “YES”, this task will be deleted from both the ListView and local Database.
   
+## Demonstration Video
+[UNLISTED YouTube Vid](https://youtu.be/8Li3651DxZo)
+
 ## References 
 - [Custom Android Layouts with Your Own ArrayAdapter](https://www.sitepoint.com/custom-data-layouts-with-your-own-android-arrayadapter/)
 - [Getting Current Time in Java](https://www.javatpoint.com/java-get-current-date)
 - [Comparing Dates in Java](https://www.tutorialspoint.com/how-to-compare-two-dates-in-java#:~:text=In%20Java%2C%20two%20dates%20can,if%20date1%20is%20before%20date2.)
 - [Sorting Lists with Custom Comparator](https://stackoverflow.com/questions/2784514/sort-arraylist-of-custom-objects-by-property)
+- [Ed Post regarding Date/Time Picker](https://edstem.org/au/courses/6662/discussion/570673)
+
+## Note
+- Inline comments have been made to give information where necessary
+- Javadoc comments have been made for all new **public** classes and methods 

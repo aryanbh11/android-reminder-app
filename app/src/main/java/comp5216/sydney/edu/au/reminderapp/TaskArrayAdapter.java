@@ -11,10 +11,19 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Custom ArrayAdapter for instances of Task
+ */
 public class TaskArrayAdapter extends ArrayAdapter<Task> {
     private Context context;
     private List<Task> tasks;
 
+    /**
+     * Constructor to create instance of this adapter
+     * @param context
+     * @param resource
+     * @param tasks ArrayList of Tasks
+     */
     public TaskArrayAdapter(Context context, int resource, ArrayList<Task> tasks) {
         super(context, resource, tasks);
 
